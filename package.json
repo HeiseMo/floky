@@ -1,0 +1,33 @@
+{
+  "name": "floky",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HeiseMo/floky.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HeiseMo/floky/issues"
+  },
+  "homepage": "https://github.com/HeiseMo/floky#readme",
+  "dependencies": {
+    "@napi-rs/canvas": "^0.1.22",
+    "@psibean/discord.js-pagination": "^4.0.5",
+    "better-sqlite3": "^7.5.3",
+    "canvacord": "^5.2.3",
+    "discord-canvas-easy": "^3.0.1",
+    "discord.js": "^13.7.0",
+    "discord.js-pagination": "^1.0.3",
+    "dotenv": "^16.0.1",
+    "easy-json-database": "^1.5.0",
+    "graceful-fs": "^4.2.10",
+    "node-gyp": "^9.0.0",
+    "undici": "^5.4.0"
+  }
+}
