@@ -329,7 +329,7 @@ client.on('messageCreate', async (message) => {
               },
 
         ]
-        leaderboard.push(d)
+        leaderboard.push(...d)
         console.log(d)
         count = leaderboard.length;
         if(count <= 5) {
@@ -338,7 +338,7 @@ client.on('messageCreate', async (message) => {
                 console.log(leaderboard)
                 let member = client.users.cache.get(leaderboard[i].user)
                 const status = member ? member.presence ? member.presence.status : "offline" : "offline";
-                console.log(member)
+
                 console.log(member.discriminator, "member ctx")
 
                 ctx.beginPath();
@@ -398,7 +398,7 @@ client.on('messageCreate', async (message) => {
 
                     ctx.font = '12px "Futura Book"';
                     ctx.fillStyle = this.colorFont;
-                    ctx.fillText(`${member.username}#${member.discriminator}`,(104 - (ctx.measureText(`${leaderboard[i].user.discriminator.length > 20 ? leaderboard[i].user.discriminator.slice(0, 20) : leaderboard[i].user.discriminator}`).width / 2)), (145 + ((i <= 4 ? i : i - 5) * 128)));
+                    ctx.fillText(`${member.username}#${member.discriminator}`,(104 - (ctx.measureText(`${member.discriminator.length > 20 ? member.discriminator.slice(0, 20) : member.discriminator}`).width / 2)), (145 + ((i <= 4 ? i : i - 5) * 128)));
 
                     ctx.font = '28px "Futura Book"';
                     ctx.fillStyle = this.colorFont;
@@ -409,7 +409,7 @@ client.on('messageCreate', async (message) => {
                 
                 } else {
 
-                    const member = client.users.cache.get(leaderboard[i].user.id)
+                    const member = client.users.cache.get(leaderboard[i].user)
                     const status = member ? member.presence ? member.presence.status : "offline" : "offline";
 
                     ctx.beginPath();
@@ -420,7 +420,8 @@ client.on('messageCreate', async (message) => {
 
                     ctx.font = '12px "Futura Book"';
                     ctx.fillStyle = this.colorFont;
-                    ctx.fillText(`${member.username}#${member.discriminator}`, (744 - (ctx.measureText(`${leaderboard[i].user.discriminator.length > 20 ? leaderboard[i].user.discriminator.slice(0, 20) : leaderboard[i].user.discriminator}`).width / 2)), (145 + ((i <= 4 ? i : i - 5) * 128)));
+                    console.log(member)
+                    ctx.fillText(`${member.username}#${member.discriminator}`, (744 - (ctx.measureText(`${member.discriminator.length > 20 ? member.discriminator.slice(0, 20) : member.discriminator}`).width / 2)), (145 + ((i <= 4 ? i : i - 5) * 128)));
 
                     ctx.font = '28px "Futura Book"';
                     ctx.fillStyle = this.colorFont;
@@ -447,22 +448,30 @@ client.on('messageCreate', async (message) => {
 
             for(let i = 0; i < 5; i++) {
 
-                const user = await this.bot.users.fetch(leaderboard[i].user.id);
+                const user = await client.users.fetch(leaderboard[i].user);
                 const member = await client.users.cache.get(user.id)
 
                 if(user) {
-                    const avatar = await Canvas.loadImage(member ? member.avatar ? member.avatarURL({format: "png"}) : user.displayAvatarURL({ format: "png" }) : user.displayAvatarURL({ format: "png" }))
+                    const { body } = await request(member.displayAvatarURL({ format: 'jpg' }));
+                    //const body = await message.author.displayAvatarURL({ format: 'jpg' });
+                    const avatar = new Canvas.Image();
+                    //avatar.src = Buffer.from(await body);
+                    avatar.src = Buffer.from(await body.arrayBuffer());
                     ctx.drawImage(avatar, 62, (42 + (i * 128)), 85, 85);
                 }
             }
 
             for(let i = 5; i < count; i++) {
 
-                const user = await client.users.fetch(leaderboard[i].user.id);
+                const user = await client.users.fetch(leaderboard[i].user);
                 const member = await client.users.cache.get(user.id)
 
                 if(user) {
-                    const avatar = await Canvas.loadImage(member ? member.avatar ? member.avatarURL({format: "png"}) : user.displayAvatarURL({ format: "png" }) : user.displayAvatarURL({ format: "png" }))
+                    const { body } = await request(member.displayAvatarURL({ format: 'jpg' }));
+                    //const body = await message.author.displayAvatarURL({ format: 'jpg' });
+                    const avatar = new Canvas.Image();
+                    //avatar.src = Buffer.from(await body);
+                    avatar.src = Buffer.from(await body.arrayBuffer());
                     ctx.drawImage(avatar, 702, (42 + ((i - 5) * 128)), 85, 85);
                 }
             }
